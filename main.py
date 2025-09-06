@@ -1,15 +1,24 @@
 import cvxpy as cp
+import graph_utils as Graph
+import json
+import laplace_utils as Laplacian
 import numpy as np
 import networkx as nx
 import random
-import laplace_utils as Laplacian
-import graph_utils as Graph
 
 def array_mask(arr, mask):
     result = []
     for index in mask:
         result.append(arr[index])
     return result
+
+def fl_range(start, end, step):
+    output = []
+    current = start
+    while (current < end):
+        output.append(current)
+        current += step
+    return output
 
 def resistance_completion(L, unknowns):
     n = len(L)
@@ -60,5 +69,15 @@ def test_completion_gnp(n, p, k):
     is_connected = Laplacian.IsConnected(L)
     return error, is_connected
 
-for i in range(10):
-    print(test_completion_gnp(20, i / 10, 80))
+test_results = dict()
+for n in range(3, 10):
+    test_results[n] = dict()
+    for p in fl_range(0, 1, 0.05):
+        test_results[n][p] = dict()
+        for k in range(1, len(Graph.all_pairs(n))):
+            test_results[n][p][k] = test_completion_gnp(n, p, k)
+            print(f'n=[{n}], p=[{p}], k=[{k}]')
+            print(test_results[n][p][k])
+
+with open('random_graph_tests.json', 'w') as f:
+    json.dump(test_results, f)
