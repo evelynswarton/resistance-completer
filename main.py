@@ -1,7 +1,7 @@
 import cvxpy as cp
-import graph_utils as Graph
+import core.graph_utils as Graph
 import json
-import laplace_utils as Laplacian
+import core.laplace_utils as Laplacian
 import numpy as np
 import networkx as nx
 import random

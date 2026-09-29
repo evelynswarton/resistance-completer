@@ -1,4 +1,4 @@
-import graph_utils as Graph
+import core.graph_utils as Graph
 import numpy as np
 import networkx as nx
 
