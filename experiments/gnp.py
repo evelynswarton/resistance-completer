@@ -7,13 +7,18 @@ import numpy as np
 import networkx as nx
 import random
 
-def test_completion_gnp(n, p, k):
-    L = nx.linalg.laplacian_matrix(nx.gnp_random_graph(n, p)).toarray()
-    unknowns = Graph.k_random_pairs(len(L), k)
-    solution = Completion.resistance_completion(L, unknowns)
-    error = np.linalg.norm(Laplacian.ArrayMask(Laplacian.Weights(L), unknowns) - solution)
-    is_connected = Laplacian.IsConnected(L)
-    return error, is_connected
+SEED = 0
+rng = np.random.default_rng(SEED)
+
+def test_completion_gnp(n, p, k, seed):
+    L = nx.linalg.laplacian_matrix(nx.gnp_random_graph(n, p, seed=seed)).toarray()
+    if Laplacian.IsConnected(L):
+        unknowns = Graph.k_random_pairs(len(L), k)
+        solution = Completion.resistance_completion(L, unknowns)
+        error = np.linalg.norm(Laplacian.ArrayMask(Laplacian.Weights(L), unknowns) - solution)
+        return error, True
+    else:
+        return -1, False
 
 def run_gnp_tests():
     test_results = dict()
@@ -22,7 +27,7 @@ def run_gnp_tests():
         for p in np.arange(0, 1, 0.05):
             test_results[n][p] = dict()
             for k in range(1, len(Graph.all_pairs(n))):
-                test_results[n][p][k] = test_completion_gnp(n, p, k)
+                test_results[n][p][k] = test_completion_gnp(n, p, k, rng)
                 print(f'n=[{n}], p=[{p}], k=[{k}]')
                 print(test_results[n][p][k])
 
