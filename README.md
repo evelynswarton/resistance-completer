@@ -17,9 +17,7 @@ the algorithm reconstructs the missing edge weights via convex optimization
 ## Getting Started 
 
 First, install all of the necessary dependencies.
-Then,
-
-
+Then, run the following commands:
 ```
 git clone https://github.com/evelynswarton/resistance-completer
 cd resistance-completer
