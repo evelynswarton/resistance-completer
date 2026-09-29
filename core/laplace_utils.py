@@ -33,3 +33,9 @@ def IsConnected(L):
     A = D - L
     G = nx.Graph(A)
     return nx.is_connected(G)
+
+def ArrayMask(arr, mask):
+    result = []
+    for index in mask:
+        result.append(arr[index])
+    return result
